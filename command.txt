@@ -1,0 +1,32 @@
+dir -> show data on previous directory
+------------------------------------------------------
+git init 
+git add .
+git commit -m "first commit"
+
+-------
+git config --global user.email "nattawat_pa62@edu.rmutl.ac.th"
+git config --global user.name "panlawan"
+
+git remote add origin https://github.com/panlawan/ENGEL111-Nattawat.git
+
+git push -u origin main
+
+
+--------------------------------------------------
+git add . 
+git commit -m "some msg"
+git push
+
+
+
+
+
+
+
+
+
+
+
+
+
