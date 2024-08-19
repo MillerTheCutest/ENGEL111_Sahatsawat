@@ -1,7 +1,9 @@
 #include "module.h"
 
-const char* ssid = "Ra";
-const char* password = "mm965370";
+const char* ssid = "Sahatsawat";
+const char* password = "";
+
+AsyncWebServer server(80); //<- http port 80
 
 void setup_wifi() {
   delay(10);
@@ -15,7 +17,7 @@ void setup_wifi() {
   while (WiFi.status() != WL_CONNECTED) {
     WiFi.begin(ssid, password);
     delay(500);
-    Serial.print(".");
+    Serial.print(" |");
   }
 
   Serial.println("");
@@ -33,5 +35,41 @@ void setup_wifiAP(){
     Serial.print(" ,PSK: ");
     Serial.println(password);
     Serial.print("AP IP address: ");
-    Serial.println(WiFi.softAPIP());
+    Serial.println(WiFi.softAPIP());//192.168.4.1
+}
+
+void config_server(){
+/*--------------1st step : Start SPIFFS--------------*/
+    if(!SPIFFS.begin(true)){
+        Serial.println("Error Starting SPIFFS");
+        return;
+    }
+
+/*--------------2nd step : Share wifi AP--------------*/
+    setup_wifiAP();
+
+
+/*NOTE : Do the first 2 steps FIRST! DO NOT SKIP 2 FIRST STEPS*/
+
+
+
+/*--------------3rd step : Create DNS--------------*/
+    if(!MDNS.begin("Sahatsawat")){
+        Serial.println("Error Starting DNS");
+        return;
+    }
+
+
+/*--------------4th step : Server on index.html--------------*/
+    server.on("/styles.css", HTTP_GET, [](AsyncWebServerRequest *request)
+                { request->send(SPIFFS, "/styles.css"); });
+    server.on("/bscripts.js", HTTP_GET, [](AsyncWebServerRequest *request)
+                { request->send(SPIFFS, "/bscripts.js"); });
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+                { request->send(SPIFFS, "/index.html"); });
+    MDNS.addService("http", "tcp", 80);
+    server.begin();
+}
+void handle_index(AsyncWebServerRequest *request){
+
 }
