@@ -1,7 +1,7 @@
 #include "module.h"
 
-const char* ssid = "Sahatsawat";
-const char* password = "";
+const char* ssid = "SahatsawatAP"; //WIFI SSID (WIFI's Name)
+const char* password = "mju7mko0MJU&MKO)"; //WIFI PSK (WIFI's Password)
 
 AsyncWebServer server(80); //<- http port 80
 
@@ -67,6 +67,13 @@ void config_server(){
                 { request->send(SPIFFS, "/bscripts.js"); });
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
                 { request->send(SPIFFS, "/index.html"); });
+    server.on("/button", HTTP_GET, [](AsyncWebServerRequest *request)
+                { request->send(SPIFFS, "/button.html"); });
+    server.on("/Info", HTTP_GET, [](AsyncWebServerRequest *request)
+                { request->send(SPIFFS, "/info.html"); });
+    server.on("/profile_picture", HTTP_GET, [](AsyncWebServerRequest *request)
+                { request->send(SPIFFS, "/image/1.jpg"); });
+
     MDNS.addService("http", "tcp", 80);
     server.begin();
 }
