@@ -61,11 +61,20 @@ extern String dnss;
 
 
 /*--------------Start Func--------------*/
+void writeEnvFile();
+void readEnvFile();
+void updateEnvVariable(const String &key, const String &value);
+bool configureNetwork(String IPAddressStr, String gatewatStr, String subnetStr, String dnsa);
+IPAddress stringToIPAddress(String ipStr);
+
 void setup_wifi();
 void setup_wifiAP();
 
 void config_server();
-void handle_index(AsyncWebServerRequest *request);
+void handleIndex(AsyncWebServerRequest *request);
+void handleSaveConfig(AsyncWebServerRequest *request);
+void handleNetworksConfig(AsyncWebServerRequest *request);
+
 
 /*--------------End Func--------------*/
 

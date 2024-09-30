@@ -9,6 +9,7 @@
     <link href="styles.css" rel="stylesheet">
     <script src="bscripts.js"></script>
     <script src="scripts.js" defer></script>
+    <script src="infofill.js"></script>
 </head>
 <body>
     <div class="b-example-divider"></div>
@@ -19,11 +20,9 @@
             </a>
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/" class="nav-link px-2 link-dark">Home</a></li>
-                <li><a href="/networks" class="nav-link px-2 link-dark">IPAddress</a></li>
-                <li><a href="/wifi" class="nav-link px-2 link-dark">WiFi</a></li>
-                <li><a href="/mqtt" class="nav-link px-2 link-dark">MQTT</a></li>
-                <li><a href="/modbus" class="nav-link px-2 link-dark">Modbus</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">LoRa</a></li>
+                <li><a href="/network" class="nav-link px-2 link-dark">IPAddress</a></li>
+                <li><a href="/temp" class="nav-link px-2 link-dark">Check tempeture</a></li>
+                <li><a href="/info" class="nav-link px-2 link-dark">About me</a></li>
             </ul>
             <div class="col-md-3 text-end">
                 <form id="saveForm" action="/saveConfig" method="POST">
@@ -59,5 +58,10 @@
             </form>
         </div>
     </div>
+
+    <div>
+        <a href="/" class="btn btn-dark btn-block">Back</a>
+    </div>
+    
 </body>
 </html>

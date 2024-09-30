@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Provinces and tempeture</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="styles.css" rel="stylesheet">
+  <script src="bscript.js"></script>
+</head>
+<body>
+    <style>
+        .table {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .table th, .table td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* จัดช่องให้ชื่อจังหวัดมีพื้นที่เพียงพอ */
+        .table td:first-child {
+            width: 60%;
+        }
+
+        /* จัดตำแหน่งหัวข้อให้อยู่ตรงกลาง */
+        th, td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                <img src="profile_picture" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+            </a>
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/" class="nav-link px-2 link-dark">Home</a></li>
+                <li><a href="/network" class="nav-link px-2 link-dark">IPAddress</a></li>
+                <li><a href="/temp" class="nav-link px-2 link-dark">Check tempeture</a></li>
+                <li><a href="/info" class="nav-link px-2 link-dark">About me</a></li>
+            </ul>
+        </header>
+    </div>
+<div class="container mt-3">
+  <h2 style="text-align: center;">จังหวัดและอุณหภูมิ</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>จังหวัด</th>
+        <th>อุณหภูมิ (°C)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p id="result1"></p></td>
+        <td><p id="temp1"></p></td>
+      </tr>
+      <tr>
+        <td><p id="result2"></p></td>
+        <td><p id="temp2"></p></td>
+      </tr>
+      <tr>
+        <td><p id="result3"></p></td>
+        <td><p id="temp3"></p></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+    // รายชื่อจังหวัด
+    const provinces = [
+        "เชียงใหม่", "เชียงราย", "ลำพูน", "ลำปาง", "แพร่", 
+        "น่าน", "กรุงเทพฯ", "พะเยา", "อุบลราชธานี", 
+        "ฉะเชิงเทรา", "ปทุมธานี", "แม่ฮ่องสอน"
+    ];
+
+    // ฟังก์ชันสุ่มจังหวัดแบบไม่ซ้ำกัน
+    function getRandomProvinces() {
+        // สุ่มและทำให้ไม่ซ้ำกัน
+        let shuffledProvinces = provinces.slice().sort(() => 0.5 - Math.random());
+        return shuffledProvinces.slice(0, 3); // เลือก 3 จังหวัด
+    }
+
+    // ฟังก์ชันสุ่มอุณหภูมิระหว่าง 20 ถึง 41 องศา
+    function getRandomTemp() {
+        return Math.floor(Math.random() * (41 - 20 + 1)) + 20;
+    }
+
+    // ฟังก์ชันสุ่มจังหวัดและอุณหภูมิ
+    function updateRandomValues() {
+        const randomProvinces = getRandomProvinces();
+        
+        // แสดงผลจังหวัดและอุณหภูมิ
+        document.getElementById("result1").textContent = randomProvinces[0];
+        document.getElementById("temp1").textContent = getRandomTemp() + " °C";
+
+        document.getElementById("result2").textContent = randomProvinces[1];
+        document.getElementById("temp2").textContent = getRandomTemp() + " °C";
+
+        document.getElementById("result3").textContent = randomProvinces[2];
+        document.getElementById("temp3").textContent = getRandomTemp() + " °C";
+    }
+
+    // ตั้งค่าให้สุ่มทุก ๆ 5 วินาที
+    updateRandomValues();
+    setInterval(updateRandomValues, 3000);
+</script>
+
+<div>
+    <a href="/" class="btn btn-dark btn-block">Back</a>
+</div>
+
+
+</body>
+</html>

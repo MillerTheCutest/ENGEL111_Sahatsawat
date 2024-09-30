@@ -1,7 +1,7 @@
 #include "module.h"
 
-const char* ssid = "SahatsawatAP"; //WIFI SSID (WIFI's Name)
-const char* password = "mju7mko0MJU&MKO)"; //WIFI PSK (WIFI's Password)
+const char* ssid = "Sahatsawat"; //WIFI SSID (WIFI's Name)
+const char* password = ""; //WIFI PSK (WIFI's Password)
 
 IPAddress ip;
 IPAddress gateways;
@@ -64,6 +64,11 @@ void setup_wifi() {
 }
 
 void setup_wifiAP(){
+    if (!WiFi.softAPConfig(ip, gateways, subnets))
+    {
+        Serial.println("AP Config Failed");
+    }
+
     WiFi.mode(WIFI_AP);
     WiFi.softAP(ssid, password);
 
@@ -85,8 +90,8 @@ void config_server(){
     }
 
 /*--------------2nd step : Share wifi AP--------------*/
-    readEnvFile; //read default info from .env file
-    configureNetwork(local_IP,gateway,subnet,dnss);
+    readEnvFile(); //read default info from .env file
+    configureNetwork(local_IP, gateway, subnet, dnss);
     setup_wifiAP();
 
 
@@ -127,6 +132,8 @@ void config_server(){
                 { request->send(SPIFFS, "/infofill.js"); });
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
                 { request->send(SPIFFS, "/index.html"); });
+    server.on("/temp", HTTP_GET, [](AsyncWebServerRequest *request)
+                { request->send(SPIFFS, "/current_tempran.html"); });
     server.on("/button", HTTP_GET, [](AsyncWebServerRequest *request)
                 { request->send(SPIFFS, "/button.html"); });
     server.on("/info", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -137,11 +144,14 @@ void config_server(){
                 { request->send(SPIFFS, "/image/1.jpg"); });
 
 
+    server.on("/networksConfig",HTTP_POST, handleNetworksConfig);
+
+    server.on("/saveConfig", HTTP_POST, handleSaveConfig);
 
     MDNS.addService("http", "tcp", 80);
     server.begin();
 }
-void handle_index(AsyncWebServerRequest *request)
+void handleIndex(AsyncWebServerRequest *request)
 {}
 
 
@@ -391,4 +401,24 @@ void handleNetworksConfig(AsyncWebServerRequest *request)
     }
 }
 
+void handleSaveConfig(AsyncWebServerRequest *request)
+{
+  String action;
+  if (request->hasParam("action", true))
+  {
+    action = request->getParam("action", true)->value();
+    if (action == "complete")
+    {
+      skip = true;
+      // Perform complete action
+      request->send(200, "text/plain", "Complete action performed.");
+    }
+    else if (action == "restart")
+    {
+      request->send(200, "text/plain", "Restarting ESP.");
+      delay(2000);
+      ESP.restart();
+    }
+  }
+}
 
